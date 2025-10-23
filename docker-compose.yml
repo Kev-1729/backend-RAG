@@ -1,0 +1,19 @@
+# Docker Compose para el backend
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: asistente-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - .:/app
+      - /app/venv
+      - ../documentos_a_procesar:/app/documentos_a_procesar
+    command: uvicorn app.core.app:app --host 0.0.0.0 --port 8000 --reload
+    restart: unless-stopped
